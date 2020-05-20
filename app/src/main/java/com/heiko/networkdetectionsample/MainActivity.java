@@ -29,13 +29,14 @@ public class MainActivity extends AppCompatActivity implements TaskCallBack {
         traceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TraceTask pingTask = new TraceTask(MainActivity.this,
+                TraceTask traceTask = new TraceTask(MainActivity.this,
                         urlEditText.getText() + "", MainActivity.this);
-                pingTask.setAppVersion(DeviceUtils.getVersion(MainActivity.this));
-                pingTask.setAppName("NetworkDetection");
-                pingTask.setAppCode("01");
-                pingTask.setDeviceId(DeviceUtils.getAndroidID(MainActivity.this));
-                pingTask.doTask();
+                traceTask.setAppVersion(DeviceUtils.getVersion(MainActivity.this));
+                traceTask.setAppName("NetworkDetection");
+                traceTask.setAppCode("01");
+                traceTask.setDeviceId(DeviceUtils.getAndroidID(MainActivity.this));
+                traceTask.setAlwaysPing(true); //是否永远进行Ping，如果是false，则根据当前网络环境判断是否要Ping
+                traceTask.doTask();
             }
         });
     }
@@ -52,6 +53,6 @@ public class MainActivity extends AppCompatActivity implements TaskCallBack {
 
     @Override
     public void onFailed(Exception e) {
-        resultTextView.append(":诊断失败" + e.getMessage());
+        resultTextView.append("诊断失败:" + e.getMessage());
     }
 }

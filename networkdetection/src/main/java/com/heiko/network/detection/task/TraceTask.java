@@ -16,6 +16,11 @@ public class TraceTask extends BaseTask implements LDNetDiagnoListener {
     private String appName;
     private String deviceId;
     private String appVersion;
+    private boolean alwaysPing;
+
+    public void setAlwaysPing(boolean alwaysPing) {
+        this.alwaysPing = alwaysPing;
+    }
 
     public void setAppCode(String appCode) {
         this.appCode = appCode;
@@ -51,12 +56,11 @@ public class TraceTask extends BaseTask implements LDNetDiagnoListener {
                 LDNetDiagnoService _netDiagnoService = new LDNetDiagnoService(context,
                         appCode, appName, appVersion, "",
                         deviceId, url, "", "",
-                        "", "", TraceTask.this);
+                        "", "", alwaysPing,TraceTask.this);
                 // 设置是否使用JNIC 完成traceroute
                 _netDiagnoService.setIfUseJNICTrace(true);
                 _netDiagnoService.execute();
             } catch (final Exception e) {
-                //resultTextView.post(new updateResultRunnable(e.toString() + "\n"));
                 if (callBack != null) {
                     context.runOnUiThread(new Runnable() {
                         @Override
@@ -68,17 +72,6 @@ public class TraceTask extends BaseTask implements LDNetDiagnoListener {
             }
         }
     };
-
-    /*public void setResult(String result) {
-        Pattern pattern = Pattern.compile("(?<=rom )[\\w\\W]+(?=\\n\\n)");
-        Matcher matcher = pattern.matcher(result);
-        if (matcher.find()) {
-            if (callBack != null) {
-                callBack.onUpdated(matcher.group(0) + "\n");
-            }
-            //resultTextView.post(new updateResultRunnable());
-        }
-    }*/
 
     @Override
     public void OnNetDiagnoFinished(final String log) {
@@ -94,7 +87,6 @@ public class TraceTask extends BaseTask implements LDNetDiagnoListener {
 
     @Override
     public void OnNetDiagnoUpdated(final String log) {
-        //resultTextView.post(new updateResultRunnable(log));
         if (callBack != null) {
             context.runOnUiThread(new Runnable() {
                 @Override

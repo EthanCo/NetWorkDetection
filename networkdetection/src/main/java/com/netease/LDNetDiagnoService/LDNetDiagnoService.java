@@ -49,6 +49,7 @@ public class LDNetDiagnoService extends
     private String _gateWay;
     private String _dns1;
     private String _dns2;
+    private boolean _alwaysPing; //是否总是进行ping
     private InetAddress[] _remoteInet;
     private List<String> _remoteIpList;
     private final StringBuilder _logInfo = new StringBuilder(256);
@@ -62,9 +63,6 @@ public class LDNetDiagnoService extends
     private boolean _isUseJNICTrace = true;
     private TelephonyManager _telManager = null; // 用于获取网络基本信息
 
-    public LDNetDiagnoService() {
-        super();
-    }
 
     /**
      * 初始化网络诊断服务
@@ -78,7 +76,7 @@ public class LDNetDiagnoService extends
                               String theAppName, String theAppVersion, String theUID,
                               String theDeviceID, String theDormain, String theCarrierName,
                               String theISOCountryCode, String theMobileCountryCode,
-                              String theMobileNetCode, LDNetDiagnoListener theListener) {
+                              String theMobileNetCode, Boolean alwaysPing,LDNetDiagnoListener theListener) {
         super();
         this._context = context;
         this._appCode = theAppCode;
@@ -87,6 +85,7 @@ public class LDNetDiagnoService extends
         this._UID = theUID;
         this._deviceID = theDeviceID;
         this._dormain = theDormain;
+        this._alwaysPing = alwaysPing;
         this._carrierName = theCarrierName;
         this._ISOCountryCode = theISOCountryCode;
         this._MobileCountryCode = theMobileCountryCode;
@@ -169,7 +168,7 @@ public class LDNetDiagnoService extends
             _isSocketConnected = _netSocker.exec(_dormain);
 
             // 诊断ping信息, 同步过程
-            if (!(_isNetConnected && _isDomainParseOk && _isSocketConnected)) {// 联网&&DNS解析成功&&connect测试成功
+            if (_alwaysPing || !(_isNetConnected && _isDomainParseOk && _isSocketConnected)) {// 联网&&DNS解析成功&&connect测试成功
                 recordStepInfo("\n开始ping...");
                 _netPinger = new LDNetPing(this, 4);
                 recordStepInfo("ping...127.0.0.1");
