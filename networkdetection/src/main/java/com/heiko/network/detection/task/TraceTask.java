@@ -1,21 +1,16 @@
 package com.heiko.network.detection.task;
 
 import android.app.Activity;
-import android.widget.TextView;
 
 import com.netease.LDNetDiagnoService.LDNetDiagnoListener;
 import com.netease.LDNetDiagnoService.LDNetDiagnoService;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
  * Created by xuzhou on 2016/8/1.
  */
-public class TraceTask extends BaseTask  implements LDNetDiagnoListener {
+public class TraceTask extends BaseTask implements LDNetDiagnoListener {
     String url;
-    TextView resultTextView;
     Activity context;
     private String appCode;
     private String appName;
@@ -38,11 +33,10 @@ public class TraceTask extends BaseTask  implements LDNetDiagnoListener {
         this.appVersion = appVersion;
     }
 
-    public TraceTask(Activity context , String url, TextView resultTextView)  {
-        super(url, resultTextView);
+    public TraceTask(Activity context, String url, TaskCallBack callBack) {
+        super(url, callBack);
         this.context = context;
         this.url = url;
-        this.resultTextView = resultTextView;
     }
 
     @Override
@@ -53,46 +47,61 @@ public class TraceTask extends BaseTask  implements LDNetDiagnoListener {
     public Runnable execRunnable = new Runnable() {
         @Override
         public void run() {
-            try{
-                /*int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE);
-
-                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
-                } else {
-//                    TraceRouteWithPing traceRouteWithPing = new TraceRouteWithPing(url, TraceTask.this);
-//                    traceRouteWithPing.executeTraceRoute();
-
-                }*/
-
+            try {
                 LDNetDiagnoService _netDiagnoService = new LDNetDiagnoService(context,
                         appCode, appName, appVersion, "",
-                        "", url, "", "",
+                        deviceId, url, "", "",
                         "", "", TraceTask.this);
                 // 设置是否使用JNIC 完成traceroute
                 _netDiagnoService.setIfUseJNICTrace(true);
                 _netDiagnoService.execute();
-            }
-            catch (Exception e){
-                resultTextView.post(new updateResultRunnable(e.toString() + "\n"));
+            } catch (final Exception e) {
+                //resultTextView.post(new updateResultRunnable(e.toString() + "\n"));
+                if (callBack != null) {
+                    context.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            callBack.onFailed(e);
+                        }
+                    });
+                }
             }
         }
     };
 
-    public void setResult(String result){
+    /*public void setResult(String result) {
         Pattern pattern = Pattern.compile("(?<=rom )[\\w\\W]+(?=\\n\\n)");
         Matcher matcher = pattern.matcher(result);
-        if(matcher.find()){
-            resultTextView.post(new updateResultRunnable(matcher.group(0) + "\n"));
+        if (matcher.find()) {
+            if (callBack != null) {
+                callBack.onUpdated(matcher.group(0) + "\n");
+            }
+            //resultTextView.post(new updateResultRunnable());
+        }
+    }*/
+
+    @Override
+    public void OnNetDiagnoFinished(final String log) {
+        if (callBack != null) {
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    callBack.onFinish(log);
+                }
+            });
         }
     }
 
     @Override
-    public void OnNetDiagnoFinished(String log) {
-
-    }
-
-    @Override
-    public void OnNetDiagnoUpdated(String log) {
-        resultTextView.post(new updateResultRunnable(log));
+    public void OnNetDiagnoUpdated(final String log) {
+        //resultTextView.post(new updateResultRunnable(log));
+        if (callBack != null) {
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    callBack.onUpdated(log);
+                }
+            });
+        }
     }
 }
