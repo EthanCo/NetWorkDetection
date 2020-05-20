@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "com.heiko.networkdetectionsample"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            ndk { //设置支持的SO库架构,取交集
+                //abiFilters "armeabi"
+                abiFilters "armeabi"/*, "x86", "armeabi-v7a", "x86_64", "arm64-v8a"*/
+            }
+        }
+        debug{
+            ndk { //设置支持的SO库架构,取交集
+                //abiFilters "armeabi"
+                abiFilters "armeabi"/*, "x86", "armeabi-v7a", "x86_64", "arm64-v8a"*/
+            }
+        }
+
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation project(path: ':networkdetection')
+}
