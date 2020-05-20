@@ -2,7 +2,7 @@ package com.netease.LDNetDiagnoService;
 
 import android.util.Log;
 
-import com.heiko.network.detection.utils.LDPingParse;
+import com.netease.utils.LDPingParse;
 
 import java.io.BufferedReader;
 import java.io.IOException;

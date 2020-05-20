@@ -44,6 +44,10 @@ public class NetworkFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 TraceTask pingTask = new TraceTask(getActivity(), urlEditText.getText() + "", resultTextView);
+                pingTask.setAppVersion(DeviceUtils.getVersion(getActivity()));
+                pingTask.setAppName("NetworkDetection");
+                pingTask.setAppCode("01");
+                pingTask.setDeviceId(DeviceUtils.getAndroidID(getActivity()));
                 pingTask.doTask();
             }
         });

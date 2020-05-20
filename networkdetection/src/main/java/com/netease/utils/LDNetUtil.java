@@ -1,4 +1,4 @@
-package com.heiko.network.detection.utils;
+package com.netease.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

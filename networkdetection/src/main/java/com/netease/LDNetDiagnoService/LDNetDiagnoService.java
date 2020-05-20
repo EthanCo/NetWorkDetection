@@ -4,7 +4,7 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-import com.heiko.network.detection.utils.LDNetUtil;
+import com.netease.utils.LDNetUtil;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -323,7 +323,9 @@ public class LDNetDiagnoService extends
         if (!TextUtils.isEmpty(_appName)) {
             recordStepInfo("应用名称:\t" + this._appName);
         }
-        recordStepInfo("应用版本:\t" + this._appVersion);
+        if (!TextUtils.isEmpty(_appVersion)) {
+            recordStepInfo("应用版本:\t" + this._appVersion);
+        }
         /*recordStepInfo("用户id:\t" + _UID);*/
 
         // 输出机器信息

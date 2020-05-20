@@ -1,8 +1,9 @@
-package com.heiko.network.detection.utils;
+package com.heiko.networkdetectionsample;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 
 /**
  * Created by Darkal on 2016/9/21.
@@ -41,11 +42,12 @@ public class DeviceUtils {
         }
     }
 
-    //dip To  px
-    public static int dip2px(Context context, int dp) {
-        //dp和px的转换关系
-        float density = context.getResources().getDisplayMetrics().density;
-        //2*1.5+0.5  2*0.75 = 1.5+0.5
-        return (int)(dp*density+0.5);
+    public static String getAndroidID(Context context) {
+        String id = Settings.Secure.getString(
+                context.getContentResolver(),
+                Settings.Secure.ANDROID_ID
+        );
+        if ("9774d56d682e549c".equals(id)) return "";
+        return id == null ? "" : id;
     }
 }

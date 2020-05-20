@@ -3,7 +3,6 @@ package com.heiko.network.detection.task;
 import android.app.Activity;
 import android.widget.TextView;
 
-import com.heiko.network.detection.utils.DeviceUtils;
 import com.netease.LDNetDiagnoService.LDNetDiagnoListener;
 import com.netease.LDNetDiagnoService.LDNetDiagnoService;
 
@@ -21,6 +20,7 @@ public class TraceTask extends BaseTask  implements LDNetDiagnoListener {
     private String appCode;
     private String appName;
     private String deviceId;
+    private String appVersion;
 
     public void setAppCode(String appCode) {
         this.appCode = appCode;
@@ -32,6 +32,10 @@ public class TraceTask extends BaseTask  implements LDNetDiagnoListener {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
     }
 
     public TraceTask(Activity context , String url, TextView resultTextView)  {
@@ -61,7 +65,7 @@ public class TraceTask extends BaseTask  implements LDNetDiagnoListener {
                 }*/
 
                 LDNetDiagnoService _netDiagnoService = new LDNetDiagnoService(context,
-                        appCode, appName, DeviceUtils.getVersion(context), "",
+                        appCode, appName, appVersion, "",
                         "", url, "", "",
                         "", "", TraceTask.this);
                 // 设置是否使用JNIC 完成traceroute
