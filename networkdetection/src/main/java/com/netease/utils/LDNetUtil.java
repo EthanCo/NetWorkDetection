@@ -328,7 +328,7 @@ public class LDNetUtil {
             case TelephonyManager.NETWORK_TYPE_UNKNOWN:
                 return "UNKNOWN";
             default:
-                return "4G";
+                return "UNKNOWN:" + telephonyManager.getNetworkType();
         }
     }
 
