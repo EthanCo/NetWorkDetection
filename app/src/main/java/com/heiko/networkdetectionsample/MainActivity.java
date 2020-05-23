@@ -1,5 +1,6 @@
 package com.heiko.networkdetectionsample;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.heiko.network.detection.task.TaskCallBack;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements TaskCallBack {
         traceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resultTextView.setText("");
                 TraceTask traceTask = new TraceTask(MainActivity.this,
                         urlEditText.getText() + "", MainActivity.this);
                 traceTask.setAppVersion(DeviceUtils.getVersion(MainActivity.this));
@@ -48,11 +51,23 @@ public class MainActivity extends AppCompatActivity implements TaskCallBack {
 
     @Override
     public void onFinish(String log) {
-        Toast.makeText(MainActivity.this, "诊断结束 !", Toast.LENGTH_SHORT).show();
+        new AlertDialog.Builder(this)
+                .setTitle("诊断结束")
+                .setMessage("请将诊断信息复制或长截屏给客服，谢谢")
+                .setCancelable(false)
+                .setNegativeButton("复制诊断信息到剪切板", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String info = resultTextView.getText().toString();
+                        ClipboardUtils.copyToClipboard(MainActivity.this, info);
+                        Toast.makeText(getApplicationContext(), "复制诊断信息成功!", Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
     }
 
     @Override
     public void onFailed(Exception e) {
         resultTextView.append("诊断失败:" + e.getMessage());
+        Toast.makeText(this, "诊断失败:" + e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }
