@@ -6,7 +6,7 @@ Android 网络诊断、网络检测库
 
 ![](./network_detaction.jpg)
 
-### Usage
+### 添加依赖
 #### Step 1. Add the JitPack repository to your build file
 Add it in your root build.gradle at the end of repositories:
 
