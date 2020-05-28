@@ -95,7 +95,7 @@ public class LDNetUtil {
                 return "中国电信";
             }
         }
-        return "未知运营商";
+        return "未知运营商:" + operator;
     }
 
     /**
@@ -193,7 +193,6 @@ public class LDNetUtil {
         }
         return str.trim();
     }*/
-
     public static String[] getLocalDns(Context context) {
         /**
          * 获取dns

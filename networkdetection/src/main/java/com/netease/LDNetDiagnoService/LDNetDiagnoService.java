@@ -11,7 +11,9 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -76,7 +78,7 @@ public class LDNetDiagnoService extends
                               String theAppName, String theAppVersion, String theUID,
                               String theDeviceID, String theDormain, String theCarrierName,
                               String theISOCountryCode, String theMobileCountryCode,
-                              String theMobileNetCode, Boolean alwaysPing,LDNetDiagnoListener theListener) {
+                              String theMobileNetCode, Boolean alwaysPing, LDNetDiagnoListener theListener) {
         super();
         this._context = context;
         this._appCode = theAppCode;
@@ -315,6 +317,8 @@ public class LDNetDiagnoService extends
      * 输出关于应用、机器、网络诊断的基本信息
      */
     private void recordCurrentAppVersion() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        recordStepInfo("诊断时间:" + simpleDateFormat.format(new Date()));
         // 输出应用版本信息和用户ID
         if (!TextUtils.isEmpty(_appCode)) {
             recordStepInfo("应用code:\t" + _appCode);
@@ -352,9 +356,13 @@ public class LDNetDiagnoService extends
 
         if (_telManager != null && TextUtils.isEmpty(_MobileCountryCode)) {
             String tmp = _telManager.getNetworkOperator();
-            _MobileCountryCode = tmp.substring(0, 3);
-            if (tmp.length() >= 5) {
-                _MobileNetCode = tmp.substring(3, 5);
+            if (!TextUtils.isEmpty(tmp)) {
+                if (tmp.length() >= 3) {
+                    _MobileCountryCode = tmp.substring(0, 3);
+                }
+                if (tmp.length() >= 5) {
+                    _MobileNetCode = tmp.substring(3, 5);
+                }
             }
         }
         recordStepInfo("MobileCountryCode:\t" + _MobileCountryCode);
