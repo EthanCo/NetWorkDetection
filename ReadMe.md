@@ -27,4 +27,10 @@ dependencies {
 }
 ```
 
+### 添加混淆
+
+```java
+-keep class com.netease.LDNetDiagnoService.**{*;}
+```
+
 感谢 [AndroidHttpCapture](https://github.com/JZ-Darkal/AndroidHttpCapture) | [LDNetDiagnoService](https://github.com/Lede-Inc/LDNetDiagnoService_Android)
