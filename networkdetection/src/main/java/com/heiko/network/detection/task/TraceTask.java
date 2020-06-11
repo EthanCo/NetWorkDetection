@@ -1,6 +1,8 @@
 package com.heiko.network.detection.task;
 
-import android.app.Activity;
+import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.netease.LDNetDiagnoService.LDNetDiagnoListener;
 import com.netease.LDNetDiagnoService.LDNetDiagnoService;
@@ -11,12 +13,14 @@ import com.netease.LDNetDiagnoService.LDNetDiagnoService;
  */
 public class TraceTask extends BaseTask implements LDNetDiagnoListener {
     String url;
-    Activity context;
+    Application context;
     private String appCode;
     private String appName;
     private String deviceId;
     private String appVersion;
     private boolean alwaysPing;
+
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     public void setAlwaysPing(boolean alwaysPing) {
         this.alwaysPing = alwaysPing;
@@ -38,7 +42,7 @@ public class TraceTask extends BaseTask implements LDNetDiagnoListener {
         this.appVersion = appVersion;
     }
 
-    public TraceTask(Activity context, String url, TaskCallBack callBack) {
+    public TraceTask(Application context, String url, TaskCallBack callBack) {
         super(url, callBack);
         this.context = context;
         this.url = url;
@@ -56,13 +60,13 @@ public class TraceTask extends BaseTask implements LDNetDiagnoListener {
                 LDNetDiagnoService _netDiagnoService = new LDNetDiagnoService(context,
                         appCode, appName, appVersion, "",
                         deviceId, url, "", "",
-                        "", "", alwaysPing,TraceTask.this);
+                        "", "", alwaysPing, TraceTask.this);
                 // 设置是否使用JNIC 完成traceroute
                 _netDiagnoService.setIfUseJNICTrace(true);
                 _netDiagnoService.execute();
             } catch (final Exception e) {
                 if (callBack != null) {
-                    context.runOnUiThread(new Runnable() {
+                    handler.post(new Runnable() {
                         @Override
                         public void run() {
                             callBack.onFailed(e);
@@ -76,7 +80,7 @@ public class TraceTask extends BaseTask implements LDNetDiagnoListener {
     @Override
     public void OnNetDiagnoFinished(final String log) {
         if (callBack != null) {
-            context.runOnUiThread(new Runnable() {
+            handler.post(new Runnable() {
                 @Override
                 public void run() {
                     callBack.onFinish(log);
@@ -88,7 +92,7 @@ public class TraceTask extends BaseTask implements LDNetDiagnoListener {
     @Override
     public void OnNetDiagnoUpdated(final String log) {
         if (callBack != null) {
-            context.runOnUiThread(new Runnable() {
+            handler.post(new Runnable() {
                 @Override
                 public void run() {
                     callBack.onUpdated(log);

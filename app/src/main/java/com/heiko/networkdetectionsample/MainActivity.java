@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements TaskCallBack {
             @Override
             public void onClick(View v) {
                 resultTextView.setText("");
-                TraceTask traceTask = new TraceTask(MainActivity.this,
+                TraceTask traceTask = new TraceTask(getApplication(),
                         urlEditText.getText() + "", MainActivity.this);
                 traceTask.setAppVersion(DeviceUtils.getVersion(MainActivity.this));
                 //traceTask.setAppName("NetworkDetection");
