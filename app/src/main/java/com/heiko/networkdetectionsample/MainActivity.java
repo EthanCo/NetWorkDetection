@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity implements TaskCallBack {
                 TraceTask traceTask = new TraceTask(getApplication(),
                         urlEditText.getText() + "", MainActivity.this);
                 traceTask.setAppVersion(DeviceUtils.getVersion(MainActivity.this));
-                //traceTask.setAppName("NetworkDetection");
-                //traceTask.setAppCode("01");
-                //traceTask.setDeviceId(DeviceUtils.getAndroidID(MainActivity.this));
-                traceTask.setAlwaysPing(false); //是否永远进行Ping，如果是false，则根据当前网络环境判断是否要Ping
+                traceTask.setAppName("NetworkDetection");
+                traceTask.setAppCode("01");
+                traceTask.setDeviceId(DeviceUtils.getAndroidID(MainActivity.this));
+                traceTask.setAlwaysPing(true); //是否永远进行Ping，如果是false，则根据当前网络环境判断是否要Ping
                 traceTask.doTask();
             }
         });

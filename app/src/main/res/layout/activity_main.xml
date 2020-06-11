@@ -10,8 +10,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <!--ermapi.xlgxapp.com-->
         <EditText
-            android:text="ermapi.xlgxapp.com"
+            android:text="www.baidu.com"
             android:id="@+id/et_url"
             android:layout_width="0dp"
             android:visibility="gone"
