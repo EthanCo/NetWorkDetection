@@ -1,5 +1,6 @@
 package com.netease.LDNetDiagnoService;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.netease.utils.LDPingParse;
@@ -25,9 +26,9 @@ public class LDNetPing {
 
   /**
    * 监控NetPing的日志输出到Service
-   * 
+   *
    * @author panghui
-   * 
+   *
    */
   public interface LDNetPingListener {
     public void OnNetPingFinished(String log);
@@ -37,7 +38,7 @@ public class LDNetPing {
 
   /**
    * 执行ping命令，返回ping命令的全部控制台输出
-   * 
+   *
    * @param ping
    * @return
    */
@@ -79,7 +80,7 @@ public class LDNetPing {
 
   /**
    * 执行指定host的traceroute
-   * 
+   *
    * @param host
    * @return
    */
@@ -104,9 +105,9 @@ public class LDNetPing {
 
   /**
    * Ping任务
-   * 
+   *
    * @author panghui
-   * 
+   *
    */
   private class PingTask {
 
@@ -119,6 +120,7 @@ public class LDNetPing {
 
     public PingTask(String host) {
       super();
+      if (TextUtils.isEmpty(host)) return;
       this.host = host;
       Pattern p = Pattern.compile(MATCH_PING_HOST_IP);
       Matcher m = p.matcher(host);
