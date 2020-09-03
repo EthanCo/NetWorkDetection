@@ -94,7 +94,7 @@ allprojects {
 
 ```java
 dependencies {
-    implementation 'com.github.EthanCo:NetWorkDetection:1.0.3'
+    implementation 'com.github.EthanCo:NetWorkDetection:1.0.4'
 }
 ```
 
