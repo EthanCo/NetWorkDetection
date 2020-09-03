@@ -53,16 +53,18 @@ public class MainActivity extends AppCompatActivity implements TaskCallBack {
     public void onFinish(String log) {
         new AlertDialog.Builder(this)
                 .setTitle("诊断结束")
-                .setMessage("请将诊断信息复制或长截屏给客服，谢谢")
+                .setMessage("可复制诊断信息到剪切板")
                 .setCancelable(false)
-                .setNegativeButton("复制诊断信息到剪切板", new DialogInterface.OnClickListener() {
+                .setPositiveButton("复制", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String info = resultTextView.getText().toString();
                         ClipboardUtils.copyToClipboard(MainActivity.this, info);
                         Toast.makeText(getApplicationContext(), "复制诊断信息成功!", Toast.LENGTH_SHORT).show();
                     }
-                }).show();
+                })
+                .setNegativeButton("取消", null)
+                .show();
     }
 
     @Override

@@ -8,20 +8,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <!--ermapi.xlgxapp.com-->
         <EditText
             android:text="www.baidu.com"
             android:id="@+id/et_url"
-            android:layout_width="0dp"
-            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:visibility="visible"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <Button
             android:id="@+id/bt_trace"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
